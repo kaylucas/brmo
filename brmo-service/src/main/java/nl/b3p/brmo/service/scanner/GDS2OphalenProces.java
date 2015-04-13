@@ -151,7 +151,7 @@ public class GDS2OphalenProces extends AbstractExecutableProces {
 
         try {
             l.updateStatus("Initialiseren...");
-            l.addLog(String.format("Initialiseren... %tc",new Date()));
+            l.addLog(String.format("Initialiseren... %tc", new Date()));
             this.config.setStatus(AutomatischProces.ProcessingStatus.PROCESSING);
             Stripersist.getEntityManager().flush();
 
@@ -269,7 +269,7 @@ public class GDS2OphalenProces extends AbstractExecutableProces {
                         filterAlVerwerkt++;
                     } else {
                         Bericht b = laadAfgifte(a, url);
-                        if(b != null) {
+                        if (b != null) {
                             geladenBerichten.add(b);
                         }
                         aantalGeladen++;
@@ -282,8 +282,8 @@ public class GDS2OphalenProces extends AbstractExecutableProces {
             this.config.addLogLine("Meer afgiftes beschikbaar: " + responseGb.getAntwoord().getMeerAfgiftesbeschikbaar());
 
             String doorsturenUrl = ClobElement.nullSafeGet(this.config.getConfig().get("delivery_endpoint"));
-            if(doorsturenUrl != null && !geladenBerichten.isEmpty()) {
-                for(Bericht b: geladenBerichten) {
+            if (doorsturenUrl != null && !geladenBerichten.isEmpty()) {
+                for (Bericht b : geladenBerichten) {
                     doorsturenBericht(this.config, l, b, doorsturenUrl);
                 }
             }
@@ -311,7 +311,7 @@ public class GDS2OphalenProces extends AbstractExecutableProces {
             this.config.addLogLine(m);
             l.exception(e);
         } finally {
-            if(Stripersist.getEntityManager().getTransaction().getRollbackOnly()) {
+            if (Stripersist.getEntityManager().getTransaction().getRollbackOnly()) {
                 // XXX bij rollback only wordt status niet naar ERROR gezet vanwege
                 // rollback, zou in aparte transactie moeten
                 Stripersist.getEntityManager().getTransaction().rollback();
@@ -345,15 +345,15 @@ public class GDS2OphalenProces extends AbstractExecutableProces {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
         int attempt = 0;
-        while(true) {
+        while (true) {
             try {
                 URLConnection connection = new URL(url).openConnection();
                 InputStream input = (InputStream) connection.getContent();
                 IOUtils.copy(input, bos);
                 break;
-            } catch(Exception e) {
+            } catch (Exception e) {
                 attempt++;
-                if(attempt == 5) {
+                if (attempt == 5) {
                     l.addLog("Fout bij laatste poging downloaden afgifte: " + e.getClass().getName() + ": " + e.getMessage());
                     throw e;
                 } else {
@@ -433,7 +433,7 @@ public class GDS2OphalenProces extends AbstractExecutableProces {
             conn.setRequestProperty("Content-Type", "application/octet-stream");
             IOUtils.copy(IOUtils.toInputStream(b.getBr_orgineel_xml(), "UTF-8"), conn.getOutputStream());
             conn.disconnect();
-            if(conn.getResponseCode() != 200) {
+            if (conn.getResponseCode() != 200) {
                 msg = String.format("HTTP foutcode bij doorsturen bericht %s op %s naar endpoint %s: %s",
                         b.getObject_ref(),
                         sdf.format(new Date()), endpoint, conn.getResponseCode() + ": " + conn.getResponseMessage());
@@ -459,4 +459,197 @@ public class GDS2OphalenProces extends AbstractExecutableProces {
             return false;
         }
     }
+
+    /**
+     * "dry run" versie van execute haalt bestanden lijst op en toont informatie
+     * in de log
+     *
+     * @param listener
+     */
+    public void dryrun(ProgressUpdateListener listener) {
+        this.l = listener;
+
+        List<Bericht> geladenBerichten = new ArrayList();
+
+        try {
+            l.updateStatus("Initialiseren...");
+            l.addLog(String.format("Initialiseren... %tc", new Date()));
+            this.config.setStatus(AutomatischProces.ProcessingStatus.PROCESSING);
+            Stripersist.getEntityManager().flush();
+
+            Gds2AfgifteServiceV20130701 gds2 = new Gds2AfgifteServiceV20130701Service().getAGds2AfgifteServiceV20130701();
+            BindingProvider bp = (BindingProvider) gds2;
+            Map<String, Object> ctxt = bp.getRequestContext();
+
+            BestandenlijstOpvragenRequest request = new BestandenlijstOpvragenRequest();
+            BestandenlijstOpvragenType verzoek = new BestandenlijstOpvragenType();
+            request.setVerzoek(verzoek);
+            AfgifteSelectieCriteriaType criteria = new AfgifteSelectieCriteriaType();
+            verzoek.setAfgifteSelectieCriteria(criteria);
+
+            BestandenlijstGBOpvragenRequest requestGb = new BestandenlijstGBOpvragenRequest();
+            BestandenlijstGbOpvragenType verzoekGb = new BestandenlijstGbOpvragenType();
+            requestGb.setVerzoek(verzoekGb);
+            criteria.setBestandKenmerken(new BestandKenmerkenType());
+
+            // negeer contractnummer voor nu
+            //String contractnummer = this.config.getConfig().get("gds2_contractnummer").getValue();
+            //criteria.getBestandKenmerken().setContractnummer(contractnummer);
+            String alGerapporteerd = ClobElement.nullSafeGet(this.config.getConfig().get("gds2_al_gerapporteerde_afgiftes"));
+            if (!"true".equals(alGerapporteerd)) {
+                criteria.setNogNietGerapporteerd(true);
+            }
+            verzoekGb.setAfgifteSelectieCriteria(criteria);
+
+            //ctxt.put(BindingProvider.USERNAME_PROPERTY, username);
+            //ctxt.put(BindingProvider.PASSWORD_PROPERTY, password);
+            String endpoint = (String) ctxt.get(BindingProvider.ENDPOINT_ADDRESS_PROPERTY);
+            l.addLog("Kadaster endpoint: " + endpoint);
+
+            //ctxt.put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,  "http://localhost:8088/AfgifteService");
+            //l.addLog("Endpoint protocol gewijzigd naar mock");
+            l.updateStatus("Laden keys...");
+            l.addLog("Loading keystore");
+            KeyStore ks = KeyStore.getInstance("jks");
+            ks.load(Main.class.getResourceAsStream("/pkioverheid.jks"), "changeit".toCharArray());
+
+            l.addLog("Initializing TrustManagerFactory");
+            TrustManagerFactory tmf = TrustManagerFactory.getInstance("PKIX");
+            tmf.init(ks);
+
+            l.addLog("Initializing KeyManagerFactory");
+            KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+            ks = KeyStore.getInstance("jks");
+
+            char[] thePassword = "changeit".toCharArray();
+
+            PrivateKey privateKey = getPrivateKeyFromPEM(this.config.getConfig().get("gds2_privkey").getValue());
+            Certificate certificate = getCertificateFromPEM(this.config.getConfig().get("gds2_pubkey").getValue());
+            ks.load(null);
+            ks.setKeyEntry("thekey", privateKey, thePassword, new Certificate[]{certificate});
+
+            kmf.init(ks, thePassword);
+
+            l.updateStatus("Opzetten SSL context...");
+            l.addLog("Initializing SSLContext");
+            this.config.addLogLine("Initializing SSLContext");
+            context = SSLContext.getInstance("TLS", "SunJSSE");
+            context.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
+            SSLContext.setDefault(context);
+            ctxt.put(JAXWSProperties.SSL_SOCKET_FACTORY, context.getSocketFactory());
+
+            l.updateStatus("Uitvoeren SOAP request naar Kadaster...");
+
+            BestandenlijstGBOpvragenResponse responseGb = gds2.bestandenlijstGBOpvragen(requestGb);
+
+            List<AfgifteGBType> afgiftesGb = new ArrayList<AfgifteGBType>();
+            afgiftesGb.addAll(responseGb.getAntwoord().getBestandenLijstGB().getAfgifteGB());
+
+            // loop over opvragen todat responseGb.getAntwoord().getMeerAfgiftesbeschikbaar()
+            // opletten; in de xsd staat een default value van 'J' voor meerAfgiftesbeschikbaar
+            boolean hasMore = responseGb.getAntwoord().getMeerAfgiftesbeschikbaar().equalsIgnoreCase("true");
+            log.debug("Zijn er meer afgiftes? " + hasMore);
+            /*
+             Indicatie nog niet gerapporteerd:
+             Met deze indicatie wordt aangegeven of uitsluitend de nog niet
+             gerapporteerde bestanden moeten worden opgenomen in de lijst, of
+             dat alle beschikbare bestanden worden genoemd.
+             Niet gerapporteerd betekent in dit geval ‘niet eerder opgevraagd in
+             deze bestandenlijst’.
+             Als deze indicator wordt gebruikt, dan worden na terugmelding van de
+             bestandenlijst de bijbehorende bestanden gemarkeerd als zijnde
+             ‘gerapporteerd’ in het systeem van GDS.
+             */
+            int moreCount = 0;
+            String dontGetMoreConfig = ClobElement.nullSafeGet(this.config.getConfig().get("gds2_niet_gerapporteerde_afgiftes_niet_ophalen"));
+            while (hasMore && !"true".equals(dontGetMoreConfig)) {
+                l.updateStatus("Uitvoeren SOAP request naar Kadaster voor meer afgiftes..." + moreCount++);
+                criteria.setNogNietGerapporteerd(true);
+                responseGb = gds2.bestandenlijstGBOpvragen(requestGb);
+                afgiftesGb.addAll(responseGb.getAntwoord().getBestandenLijstGB().getAfgifteGB());
+                hasMore = responseGb.getAntwoord().getMeerAfgiftesbeschikbaar().equalsIgnoreCase("true");
+                log.debug("Nog meer afgiftes? " + hasMore);
+            }
+
+            l.total(afgiftesGb.size());
+            config.addLogLine("Totaal aantal opgehaalde berichten: " + afgiftesGb.size());
+
+            int filterAlVerwerkt = 0;
+            int aantalGeladen = 0;
+            int progress = 0;
+
+            for (AfgifteGBType a : afgiftesGb) {
+                String kenmerken = "(geen)";
+                if (a.getBestandKenmerken() != null) {
+                    kenmerken = String.format("contractnr: %s, artikelnr: %s, artikelomschrijving: %s",
+                            a.getBestandKenmerken().getContractnummer(),
+                            a.getBestandKenmerken().getArtikelnummer(),
+                            a.getBestandKenmerken().getArtikelomschrijving());
+                }
+                l.addLog(String.format("ID: %s, referentie: %s, bestandsnaam: %s, bestandref: %s, beschikbaarTot: %s, kenmerken: %s\n",
+                        a.getAfgifteID(),
+                        a.getAfgiftereferentie(),
+                        a.getBestand().getBestandsnaam(),
+                        a.getBestand().getBestandsreferentie(),
+                        a.getBeschikbaarTot(),
+                        kenmerken));
+                if (a.getDigikoppelingExternalDatareferences() != null
+                        && a.getDigikoppelingExternalDatareferences().getDataReference() != null) {
+                    for (DataReference dr : a.getDigikoppelingExternalDatareferences().getDataReference()) {
+                        l.addLog(String.format(dr.getTransport().getLocation().getSenderUrl().getValue()));
+                        l.addLog(String.format("   Digikoppeling datareference: contextId: %s, creationTime: %s, expirationTime: %s, filename: %s, checksum: %s, size: %d, type: %s, senderUrl: %s, receiverUrl: %s\n",
+                                dr.getContextId(),
+                                dr.getLifetime().getCreationTime().getValue(),
+                                dr.getLifetime().getExpirationTime().getValue(),
+                                dr.getContent().getFilename(),
+                                dr.getContent().getChecksum().getValue(),
+                                dr.getContent().getSize(),
+                                dr.getContent().getContentType(),
+                                dr.getTransport().getLocation().getSenderUrl() == null ? "-" : dr.getTransport().getLocation().getSenderUrl().getValue(),
+                                dr.getTransport().getLocation().getReceiverUrl() == null ? "-" : dr.getTransport().getLocation().getReceiverUrl().getValue()));
+                    }
+                }
+            }
+
+            l.addLog("Meer afgiftes beschikbaar: " + responseGb.getAntwoord().getMeerAfgiftesbeschikbaar());
+            this.config.addLogLine("Meer afgiftes beschikbaar: " + responseGb.getAntwoord().getMeerAfgiftesbeschikbaar());
+
+            String doorsturenUrl = ClobElement.nullSafeGet(this.config.getConfig().get("delivery_endpoint"));
+            if (doorsturenUrl != null && !geladenBerichten.isEmpty()) {
+                for (Bericht b : geladenBerichten) {
+                    doorsturenBericht(this.config, l, b, doorsturenUrl);
+                }
+            }
+
+            l.addLog("\n\n**** resultaat ****\n");
+            l.addLog("Aantal afgiftes die al waren verwerkt: " + filterAlVerwerkt);
+            l.addLog("\nAantal afgiftes geladen: " + aantalGeladen + "\n");
+
+            this.config.updateSamenvattingEnLogfile("Aantal afgiftes die al waren verwerkt: " + filterAlVerwerkt + LOG_NEWLINE
+                    + "Aantal afgiftes geladen: " + aantalGeladen);
+
+            this.config.setStatus(AutomatischProces.ProcessingStatus.WAITING);
+            this.config.setLastrun(new Date());
+            Stripersist.getEntityManager().merge(this.config);
+            Stripersist.getEntityManager().getTransaction().commit();
+        } catch (Exception e) {
+            log.error("Fout bij ophalen van GDS2 berichten", e);
+            this.config.setLastrun(new Date());
+            this.config.setSamenvatting("Er is een fout opgetreden, details staan in de logs");
+            this.config.setStatus(AutomatischProces.ProcessingStatus.ERROR);
+            String m = "Fout bij ophalen van GDS2 berichten: " + ExceptionUtils.getMessage(e);
+            if (e.getCause() != null) {
+                m += ", oorzaak: " + ExceptionUtils.getRootCauseMessage(e);
+            }
+            this.config.addLogLine(m);
+            l.exception(e);
+        } finally {
+            if (Stripersist.getEntityManager().getTransaction().getRollbackOnly()) {
+                // XXX bij rollback only wordt status niet naar ERROR gezet vanwege
+                // rollback, zou in aparte transactie moeten
+                Stripersist.getEntityManager().getTransaction().rollback();
+            }
+        }
+    }
+
 }
