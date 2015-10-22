@@ -30,9 +30,11 @@ public class BrmoFramework {
 
     public static final String BR_BAG = "bag";
     public static final String BR_BRK = "brk";
+    public static final String BR_NHR = "nhr";
 
     public static final String XSL_BRK = "/xsl/brk-snapshot-to-rsgb-xml.xsl";
     public static final String XSL_BAG = "/xsl/bag-mutatie-to-rsgb-xml.xsl";
+    public static final String XSL_NHR = "/xsl/nhr-bericht-to-rsgb-xml.xsl";
 
     public static final String LAADPROCES_TABEL = "laadproces";
     public static final String BERICHT_TABLE = "bericht";
@@ -340,7 +342,13 @@ public class BrmoFramework {
             throw new BrmoException(ex);
         }
     }*/
-
+    /**
+     * @deprecated wordt niet gebruikt
+     *
+     * @param brType
+     * @return
+     * @throws BrmoException
+     */
     private RsgbTransformer getTransformer(String brType) throws BrmoException {
         try {
             RsgbTransformer transformer = null;

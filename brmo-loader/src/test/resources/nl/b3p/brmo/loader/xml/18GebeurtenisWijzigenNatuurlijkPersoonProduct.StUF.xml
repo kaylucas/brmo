@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dgl:VerstrekkingDoorLV xmlns:dgl="http://www.digilevering.nl/digilevering.xsd">
+	  <datumtijdstempelLV xmlns:cat="http://schemas.kvk.nl/schemas/hrip/catalogus/2013/01"
+                       xmlns:reg="http://schemas.kvk.nl/schemas/hrip/registratie/2012/04"
+                       xmlns:ip="http://schemas.kvk.nl/schemas/hrip/product/2011/09"
+                       xmlns:res="http://schemas.kvk.nl/schemas/hrip/respons/2011/01"
+                       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">2013-02-26T16:19:09+01:00</datumtijdstempelLV>
+	  <kenmerkLV xmlns:cat="http://schemas.kvk.nl/schemas/hrip/catalogus/2013/01"
+              xmlns:reg="http://schemas.kvk.nl/schemas/hrip/registratie/2012/04"
+              xmlns:ip="http://schemas.kvk.nl/schemas/hrip/product/2011/09"
+              xmlns:res="http://schemas.kvk.nl/schemas/hrip/respons/2011/01"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">23a8c369:13d1568fe98:15fa</kenmerkLV>
+	  <versieBerichttype xmlns:cat="http://schemas.kvk.nl/schemas/hrip/catalogus/2013/01"
+                      xmlns:reg="http://schemas.kvk.nl/schemas/hrip/registratie/2012/04"
+                      xmlns:ip="http://schemas.kvk.nl/schemas/hrip/product/2011/09"
+                      xmlns:res="http://schemas.kvk.nl/schemas/hrip/respons/2011/01"
+                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">2.2</versieBerichttype>
+	  <basisregistratie xmlns:cat="http://schemas.kvk.nl/schemas/hrip/catalogus/2013/01"
+                     xmlns:reg="http://schemas.kvk.nl/schemas/hrip/registratie/2012/04"
+                     xmlns:ip="http://schemas.kvk.nl/schemas/hrip/product/2011/09"
+                     xmlns:res="http://schemas.kvk.nl/schemas/hrip/respons/2011/01"
+                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">nHR</basisregistratie>
+	  <gebeurtenissoort xmlns:cat="http://schemas.kvk.nl/schemas/hrip/catalogus/2013/01"
+                     xmlns:reg="http://schemas.kvk.nl/schemas/hrip/registratie/2012/04"
+                     xmlns:ip="http://schemas.kvk.nl/schemas/hrip/product/2011/09"
+                     xmlns:res="http://schemas.kvk.nl/schemas/hrip/respons/2011/01"
+                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+		    <naam>Wijzigen natuurlijk persoon</naam>
+		    <versie>2.2</versie>
+	  </gebeurtenissoort>
+	  <gebeurtenisinhoud xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                      xmlns:StUF="http://www.egem.nl/StUF/StUF0301"
+                      xmlns:kvk="http://www.kvk.nl/StUF/sector/hr/0300"
+                      xmlns:cat="http://schemas.kvk.nl/schemas/hrip/catalogus/2013/01"
+                      xmlns:res="http://schemas.kvk.nl/schemas/hrip/respons/2011/01">
+      <kvk:maatschappelijkeActiviteit xmlns:gp="http://schemas.kvk.nl/schemas/hrip/generiekproduct/2013/01"
+                                      StUF:entiteittype="MAC"
+                                      StUF:functie="entiteit">
+         <kvk:registratieTijdstip>00000000000000000</kvk:registratieTijdstip>
+         <kvk:kvkNummer>88888888</kvk:kvkNummer>
+         <kvk:nonMailing>Ja</kvk:nonMailing>
+         <kvk:heeftAlsEigenaar StUF:entiteittype="MACPRS">
+            <kvk:gerelateerde StUF:entiteittype="PRS" StUF:functie="entiteit">
+               <kvk:natuurlijkPersoon StUF:entiteittype="NPS" StUF:functie="entiteit">
+                  <kvk:registratieTijdstip>00000000000000000</kvk:registratieTijdstip>
+               </kvk:natuurlijkPersoon>
+            </kvk:gerelateerde>
+         </kvk:heeftAlsEigenaar>
+      </kvk:maatschappelijkeActiviteit>
+   </gebeurtenisinhoud>
+</dgl:VerstrekkingDoorLV>

@@ -31,6 +31,7 @@ import nl.b3p.brmo.loader.util.TableData;
 import nl.b3p.brmo.loader.xml.BagXMLReader;
 import nl.b3p.brmo.loader.xml.BrkSnapshotXMLReader;
 import nl.b3p.brmo.loader.xml.BrmoXMLReader;
+import nl.b3p.brmo.loader.xml.NhrXMLReader;
 import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
@@ -494,6 +495,8 @@ public class StagingProxy {
             brmoXMLReader = new BrkSnapshotXMLReader(cis);
         } else if (type.equals(BrmoFramework.BR_BAG)) {
             brmoXMLReader = new BagXMLReader(cis);
+        } else if (type.equals(BrmoFramework.BR_NHR)) {
+            brmoXMLReader = new NhrXMLReader(cis);
         } else {
             throw new UnsupportedOperationException("Ongeldige basisregistratie: " + type);
         }
