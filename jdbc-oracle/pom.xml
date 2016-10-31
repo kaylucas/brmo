@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.geotools.jdbc</groupId>
     <artifactId>gt-jdbc-oracle</artifactId>
-    <version>1.3.6</version>
+    <version>14.5.p2</version>
     <packaging>jar</packaging>
     <name>Patched GeoTools Oracle JDBC package</name>
     <description>Bouwt een patch versie van de GeoTools Oracle JDBC module waarin issue
@@ -37,7 +37,7 @@
                                     <classifier>sources</classifier>
                                     <overWrite>true</overWrite>
                                     <outputDirectory>${project.build.directory}/generated-sources/java</outputDirectory>
-                                    <excludes>**/META-INF/**</excludes>
+                                    <excludes>**/META-INF/MANIFEST.MF</excludes>
                                 </artifactItem>
                             </artifactItems>
                         </configuration>
@@ -58,6 +58,21 @@
                             <sources>
                                 <source>${project.build.directory}/generated-sources/java</source>
                             </sources>
+                        </configuration>
+                    </execution>
+                   <execution>
+                        <id>add-patch-resources</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>add-resource</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource>
+                                    <directory>${project.build.directory}/generated-sources/java/META-INF</directory>
+                                    <targetPath>META-INF</targetPath>
+                                </resource>
+                            </resources>
                         </configuration>
                     </execution>
                 </executions>
