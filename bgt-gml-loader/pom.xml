@@ -68,8 +68,9 @@
                 </executions>
                 <configuration>
                     <transformationSets>
+                        <!-- BGT set -->
                         <transformationSet>
-                            <dir>src/main/xml</dir>
+                            <dir>src/main/xml/bgt</dir>
                             <stylesheet>src/main/xsl/gmlight-transformers.xsl</stylesheet>
                             <outputDir>${project.build.directory}/generated-sources/xslt</outputDir>
                             <parameters>
@@ -80,7 +81,7 @@
                             </parameters>
                         </transformationSet>
                         <transformationSet>
-                            <dir>src/main/xml</dir>
+                            <dir>src/main/xml/bgt</dir>
                             <stylesheet>src/main/xsl/ddl-oracle.xsl</stylesheet>
                             <parameters>
                                 <parameter>
@@ -96,7 +97,7 @@
                             </fileMappers>
                         </transformationSet>
                         <transformationSet>
-                            <dir>src/main/xml</dir>
+                            <dir>src/main/xml/bgt</dir>
                             <stylesheet>src/main/xsl/ddl-sqlserver.xsl</stylesheet>
                             <parameters>
                                 <parameter>
@@ -112,7 +113,7 @@
                             </fileMappers>
                         </transformationSet>
                         <transformationSet>
-                            <dir>src/main/xml</dir>
+                            <dir>src/main/xml/bgt</dir>
                             <stylesheet>src/main/xsl/ddl-postgresql.xsl</stylesheet>
                             <parameters>
                                 <parameter>
@@ -128,7 +129,7 @@
                             </fileMappers>
                         </transformationSet>
                         <transformationSet>
-                            <dir>src/main/xml</dir>
+                            <dir>src/main/xml/bgt</dir>
                             <stylesheet>src/main/xsl/drop-sqlserver.xsl</stylesheet>
                             <outputDir>${project.build.directory}/generated-resources/ddl/sqlserver</outputDir>
                             <fileMappers>
@@ -138,7 +139,7 @@
                             </fileMappers>
                         </transformationSet>
                         <transformationSet>
-                            <dir>src/main/xml</dir>
+                            <dir>src/main/xml/bgt</dir>
                             <stylesheet>src/main/xsl/drop-postgresql.xsl</stylesheet>
                             <outputDir>${project.build.directory}/generated-resources/ddl/postgresql</outputDir>
                             <fileMappers>
@@ -148,12 +149,103 @@
                             </fileMappers>
                         </transformationSet>
                         <transformationSet>
-                            <dir>src/main/xml</dir>
+                            <dir>src/main/xml/bgt</dir>
                             <stylesheet>src/main/xsl/drop-oracle.xsl</stylesheet>
                             <outputDir>${project.build.directory}/generated-resources/ddl/oracle</outputDir>
                             <fileMappers>
                                 <fileMapper implementation="org.codehaus.plexus.components.io.filemappers.MergeFileMapper">
                                     <targetName>drop_rsgb_bgt.sql</targetName>
+                                </fileMapper>
+                            </fileMappers>
+                        </transformationSet>
+                        
+                        <!-- TOPNL set -->
+                        <transformationSet>
+                            <dir>src/main/xml/topnl</dir>
+                            <stylesheet>src/main/xsl/gmlight-transformers.xsl</stylesheet>
+                            <outputDir>${project.build.directory}/generated-sources/xslt</outputDir>
+                            <parameters>
+                                <parameter>
+                                    <name>baseDirectory</name>
+                                    <value>${project.baseUri}/target/generated-sources/xslt/</value>
+                                </parameter>
+                            </parameters>
+                        </transformationSet>
+                        <transformationSet>
+                            <dir>src/main/xml/topnl</dir>
+                            <stylesheet>src/main/xsl/ddl-oracle.xsl</stylesheet>
+                            <parameters>
+                                <parameter>
+                                    <name>versie</name>
+                                    <value>${project.version}</value>
+                                </parameter>
+                            </parameters>
+                            <outputDir>${project.build.directory}/generated-resources/ddl/oracle</outputDir>
+                            <fileMappers>
+                                <fileMapper implementation="org.codehaus.plexus.components.io.filemappers.MergeFileMapper">
+                                    <targetName>create_rsgb_topnl.sql</targetName>
+                                </fileMapper>
+                            </fileMappers>
+                        </transformationSet>
+                        <transformationSet>
+                            <dir>src/main/xml/topnl</dir>
+                            <stylesheet>src/main/xsl/ddl-sqlserver.xsl</stylesheet>
+                            <parameters>
+                                <parameter>
+                                    <name>versie</name>
+                                    <value>${project.version}</value>
+                                </parameter>
+                            </parameters>
+                            <outputDir>${project.build.directory}/generated-resources/ddl/sqlserver</outputDir>
+                            <fileMappers>
+                                <fileMapper implementation="org.codehaus.plexus.components.io.filemappers.MergeFileMapper">
+                                    <targetName>create_rsgb_topnl.sql</targetName>
+                                </fileMapper>
+                            </fileMappers>
+                        </transformationSet>
+                        <transformationSet>
+                            <dir>src/main/xml/topnl</dir>
+                            <stylesheet>src/main/xsl/ddl-postgresql.xsl</stylesheet>
+                            <parameters>
+                                <parameter>
+                                    <name>versie</name>
+                                    <value>${project.version}</value>
+                                </parameter>
+                            </parameters>
+                            <outputDir>${project.build.directory}/generated-resources/ddl/postgresql</outputDir>
+                            <fileMappers>
+                                <fileMapper implementation="org.codehaus.plexus.components.io.filemappers.MergeFileMapper">
+                                    <targetName>create_rsgb_topnl.sql</targetName>
+                                </fileMapper>
+                            </fileMappers>
+                        </transformationSet>
+                        <transformationSet>
+                            <dir>src/main/xml/topnl</dir>
+                            <stylesheet>src/main/xsl/drop-sqlserver.xsl</stylesheet>
+                            <outputDir>${project.build.directory}/generated-resources/ddl/sqlserver</outputDir>
+                            <fileMappers>
+                                <fileMapper implementation="org.codehaus.plexus.components.io.filemappers.MergeFileMapper">
+                                    <targetName>drop_rsgb_topnl.sql</targetName>
+                                </fileMapper>
+                            </fileMappers>
+                        </transformationSet>
+                        <transformationSet>
+                            <dir>src/main/xml/topnl</dir>
+                            <stylesheet>src/main/xsl/drop-postgresql.xsl</stylesheet>
+                            <outputDir>${project.build.directory}/generated-resources/ddl/postgresql</outputDir>
+                            <fileMappers>
+                                <fileMapper implementation="org.codehaus.plexus.components.io.filemappers.MergeFileMapper">
+                                    <targetName>drop_rsgb_topnl.sql</targetName>
+                                </fileMapper>
+                            </fileMappers>
+                        </transformationSet>
+                        <transformationSet>
+                            <dir>src/main/xml/topnl</dir>
+                            <stylesheet>src/main/xsl/drop-oracle.xsl</stylesheet>
+                            <outputDir>${project.build.directory}/generated-resources/ddl/oracle</outputDir>
+                            <fileMappers>
+                                <fileMapper implementation="org.codehaus.plexus.components.io.filemappers.MergeFileMapper">
+                                    <targetName>drop_rsgb_topnl.sql</targetName>
                                 </fileMapper>
                             </fileMappers>
                         </transformationSet>

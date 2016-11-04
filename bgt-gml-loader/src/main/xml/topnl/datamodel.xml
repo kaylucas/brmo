@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (C) 2016 B3Partners B.V.
+-->
+<datamodel>
+    <!-- en aantal object typen worden niet getransformeerd en er word geen tabel voor aaangemaakt,
+    ze staan aan het eind van dit document, zie ook BGTGMLLightTransformerFactory.
+    Het beperkt zich mn. tot bestuurlijke grenzen en zaken in de BAG.
+    -->
+    
+    <!-- TOP250nl -->
+    
+    <objecttype clazz="TOP250FunctioneelGebied" table="functioneel_gebied">
+        <attribuut xslname="identificatie"  sqlname="identificatie" sqltype="varchar(255)"/>
+        <attribuut xslname="brontype"  sqlname="brontype" sqltype="varchar(255)"/>
+        <attribuut xslname="bronactualiteit"  sqlname="bronactualiteit" sqltype="timestamp"/>
+        <attribuut xslname="bronbeschrijving"  sqlname="bronbeschrijving" sqltype="varchar(255)"/>
+        <attribuut xslname="bronnauwkeurigheid"  sqlname="bronnauwkeurigheid" sqltype="varchar(255)"/>
+        <attribuut xslname="objectBeginTijd"  sqlname="objectBeginTijd" sqltype="timestamp"/>
+        <attribuut xslname="objectEindTijd"  sqlname="objectEindTijd" sqltype="timestamp"/>
+        <attribuut xslname="visualisatieCode"  sqlname="visualisatieCode" sqltype="float(23)"/>
+        <attribuut xslname="typeFunctioneelGebied"  sqlname="typeFunctioneelGebied" sqltype="varchar(255)"/>
+        <attribuut xslname="soortnaam"  sqlname="soortnaam" sqltype="varchar(255)"/>
+        <attribuut xslname="naamNL"  sqlname="naamNL" sqltype="varchar(255)"/>
+        <attribuut xslname="geometrie"  sqlname="geometrie" sqltype="geometry"/>
+    </objecttype>
+    
+</datamodel>
