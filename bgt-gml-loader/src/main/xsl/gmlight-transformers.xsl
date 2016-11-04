@@ -17,6 +17,7 @@
     <xsl:output method="text" encoding="utf-8"/>
     
     <xsl:param name="baseDirectory">target/generated-sources/xslt/</xsl:param>
+    <xsl:param name="packageName"/>
     
     <xsl:template match="/">
         <xsl:apply-templates select="/datamodel/objecttype" mode="generateClass" />
@@ -26,7 +27,7 @@
         
         <xsl:variable name="className" select="@clazz"/>
 
-        <xsl:variable name="filename" select="concat($baseDirectory,'nl/b3p/brmo/loader/gml/light/',$className,'.java')" />
+        <xsl:variable name="filename" select="concat($baseDirectory,$packageName,'/',$className,'.java')" />
         <xsl:value-of select="$filename" />
 
         <xsl:result-document href="{$filename}" method="text">
@@ -95,7 +96,9 @@ public class </xsl:text>
         <xsl:value-of select="current-dateTime()"/>
         <xsl:text>
 */
-package nl.b3p.brmo.loader.gml.light;
+package </xsl:text><xsl:value-of select="replace($packageName, '/', '.')"/>
+
+<xsl:text>;
         </xsl:text>
     </xsl:template>
 </xsl:stylesheet>

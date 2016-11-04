@@ -72,11 +72,15 @@
                         <transformationSet>
                             <dir>src/main/xml/bgt</dir>
                             <stylesheet>src/main/xsl/gmlight-transformers.xsl</stylesheet>
-                            <outputDir>${project.build.directory}/generated-sources/xslt</outputDir>
+                            <outputDir>${project.build.directory}/generated-sources/bgt</outputDir>
                             <parameters>
                                 <parameter>
                                     <name>baseDirectory</name>
-                                    <value>${project.baseUri}/target/generated-sources/xslt/</value>
+                                    <value>${project.baseUri}/target/generated-sources/bgt/</value>
+                                </parameter>
+                                <parameter>
+                                    <name>packageName</name>
+                                    <value>nl/b3p/brmo/loader/gml/light</value>
                                 </parameter>
                             </parameters>
                         </transformationSet>
@@ -163,11 +167,15 @@
                         <transformationSet>
                             <dir>src/main/xml/topnl</dir>
                             <stylesheet>src/main/xsl/gmlight-transformers.xsl</stylesheet>
-                            <outputDir>${project.build.directory}/generated-sources/xslt</outputDir>
+                            <outputDir>${project.build.directory}/generated-sources/topnl</outputDir>
                             <parameters>
                                 <parameter>
                                     <name>baseDirectory</name>
-                                    <value>${project.baseUri}/target/generated-sources/xslt/</value>
+                                    <value>${project.baseUri}/target/generated-sources/topnl/</value>
+                                </parameter>
+                                <parameter>
+                                    <name>packageName</name>
+                                    <value>nl/b3p/brmo/loader/topnl</value>
                                 </parameter>
                             </parameters>
                         </transformationSet>
@@ -271,7 +279,8 @@
                         </goals>
                         <configuration>
                             <sources>
-                                <source>${project.build.directory}/generated-sources/xslt</source>
+                                <source>${project.build.directory}/generated-sources/bgt</source>
+                                <source>${project.build.directory}/generated-sources/topnl</source>
                             </sources>
                         </configuration>
                     </execution>
