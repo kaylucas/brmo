@@ -78,7 +78,7 @@ public class BGTGMLLightParserTest {
 
     @Before
     public void setUpParser() {
-        final String schemaLocation = BGTGMLLightParserTest.class.getResource("/imgeo-simple_resolved.xsd").getFile();
+        final String schemaLocation = BGTGMLLightParserTest.class.getResource("/BGT/imgeo-simple_resolved.xsd").getFile();
 
         Configuration configuration = new ApplicationSchemaConfiguration("http://www.geostandaarden.nl/imgeo/2.1/simple/gml31", schemaLocation);
         configuration.getContext().registerComponentInstance(new GeometryFactory(new PrecisionModel(), 28992));

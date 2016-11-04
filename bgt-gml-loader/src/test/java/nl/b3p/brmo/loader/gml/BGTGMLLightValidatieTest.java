@@ -71,7 +71,7 @@ public class BGTGMLLightValidatieTest {
 
         SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
         Source schemaFile = new StreamSource(
-                new File(BGTLightKruinlijnIntegrationTest.class.getResource("/imgeo-simple_resolved.xsd").toURI())
+                new File(BGTLightKruinlijnIntegrationTest.class.getResource("/BGT/imgeo-simple_resolved.xsd").toURI())
         );
         Schema schema = factory.newSchema(schemaFile);
         Validator validator = schema.newValidator();

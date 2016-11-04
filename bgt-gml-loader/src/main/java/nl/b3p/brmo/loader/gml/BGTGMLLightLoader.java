@@ -111,7 +111,7 @@ public class BGTGMLLightLoader {
      * Default constructor initaliseert de GML parser.
      */
     public BGTGMLLightLoader() {
-        final String schemaLocation = BGTGMLLightLoader.class.getResource("/imgeo-simple_resolved.xsd").toString();
+        final String schemaLocation = BGTGMLLightLoader.class.getResource("/BGT/imgeo-simple_resolved.xsd").toString();
 
         Configuration configuration = new ApplicationSchemaConfiguration("http://www.geostandaarden.nl/imgeo/2.1/simple/gml31", schemaLocation);
         configuration.getContext().registerComponentInstance(new GeometryFactory(new PrecisionModel(), 28992));
