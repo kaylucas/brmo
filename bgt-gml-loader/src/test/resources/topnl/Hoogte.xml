@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Created by GO Publisher Desktop 2.1.5 Build 34394 from 2013-02-27 18:06-->
+<!--Snowflake Software Ltd. (http://www.snowflakesoftware.com)-->
+<top250nl:FeatureCollectionT250NL gml:id="Top250NL_201508" xmlns:brt="http://register.geostandaarden.nl/gmlapplicatieschema/brt-algemeen/1.2.0" xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:gsr="http://www.isotc211.org/2005/gsr" xmlns:gss="http://www.isotc211.org/2005/gss" xmlns:gts="http://www.isotc211.org/2005/gts" xmlns:top250nl="http://register.geostandaarden.nl/gmlapplicatieschema/top250nl/1.2.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://register.geostandaarden.nl/gmlapplicatieschema/top250nl/1.2.0 top250nl.xsd">
+<top250nl:FeatureMember>
+    <top250nl:Hoogte gml:id="NL.TOP250NL.16R09-0000084245">
+      <top250nl:identificatie>
+        <brt:NEN3610ID>
+          <brt:namespace>NL.TOP250NL</brt:namespace>
+          <brt:lokaalID>16R09-0000084245</brt:lokaalID>
+        </brt:NEN3610ID>
+      </top250nl:identificatie>
+      <top250nl:brontype>TOP50NL</top250nl:brontype>
+      <top250nl:bronactualiteit>2016-09-01</top250nl:bronactualiteit>
+      <top250nl:bronbeschrijving>TOP50NL wordt als bron gebruikt bij het bijwerken van EuroRegionalMap (ERM). Via een automatisch proces worden de gegevens van ERM omgezet naar TOP250NL</top250nl:bronbeschrijving>
+      <top250nl:bronnauwkeurigheid>125</top250nl:bronnauwkeurigheid>
+      <top250nl:objectBeginTijd>2016-09-12</top250nl:objectBeginTijd>
+      <top250nl:visualisatieCode>45550</top250nl:visualisatieCode>
+      <top250nl:typeHoogte>hoogwaterlijn</top250nl:typeHoogte>
+      <top250nl:geometrie>
+        <brt:BRTLijnOfPunt>
+          <brt:lijnGeometrie>
+            <gml:LineString srsName="urn:ogc:def:crs:EPSG::28992" gml:id="LOCAL_ID_88514">
+              <gml:posList srsDimension="2" count="14">232640.546700001 616872.0792 232634.3358 616990.7577 232728.769499999 617265.7579 232811.157000002 617565.054499999 232838.838100001 617829.227499999 232915.6853 617933.010699999 233068.4846 618018.5579 233303.643800002 618046.852000002 233548.853500001 618062.6329 234015.588100001 618092.782000002 234509.317699999 618140.069899999 235049.900699999 618168.659200002 235341.1503 618149.1263 235797.442499999 618000.545299999</gml:posList>
+            </gml:LineString>
+          </brt:lijnGeometrie>
+        </brt:BRTLijnOfPunt>
+      </top250nl:geometrie>
+    </top250nl:Hoogte>
+  </top250nl:FeatureMember>
+</top250nl:FeatureCollectionT250NL>
